@@ -1,0 +1,216 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact Us - HouseRent{% endblock %}
+
+{% block content %}
+
+<section class="py-5" style="background:#f5f8ff;">
+
+    <div class="container py-4">
+
+        <!-- Heading -->
+        <div class="text-center mb-5">
+
+            <span class="badge bg-primary px-3 py-2 mb-3">
+                Contact Us
+            </span>
+
+            <h1 class="fw-bold">
+                Get In Touch With Us
+            </h1>
+
+            <p class="text-muted">
+                Have questions about a property or booking?
+                We're here to help you.
+            </p>
+
+        </div>
+
+
+        <div class="row g-4">
+
+            <!-- LEFT SIDE CONTACT INFO -->
+            <div class="col-lg-5">
+
+                <div class="card border-0 shadow-lg rounded-4 h-100">
+
+                    <div class="card-body p-4 p-md-5">
+
+                        <h3 class="fw-bold mb-4">
+                            Contact Information
+                        </h3>
+
+                        <!-- Location -->
+                        <div class="d-flex mb-4">
+
+                            <div class="me-3">
+                                <i class="bi bi-geo-alt-fill text-primary fs-3"></i>
+                            </div>
+
+                            <div>
+                                <h5 class="fw-bold mb-1">Address</h5>
+                                <p class="text-muted mb-0">
+                                    Pune, Maharashtra, India
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <!-- Phone -->
+                        <div class="d-flex mb-4">
+
+                            <div class="me-3">
+                                <i class="bi bi-telephone-fill text-success fs-3"></i>
+                            </div>
+
+                            <div>
+                                <h5 class="fw-bold mb-1">Phone</h5>
+                                <p class="text-muted mb-0">
+                                    +91 98765 43210
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <!-- Email -->
+                        <div class="d-flex mb-4">
+
+                            <div class="me-3">
+                                <i class="bi bi-envelope-fill text-danger fs-3"></i>
+                            </div>
+
+                            <div>
+                                <h5 class="fw-bold mb-1">Email</h5>
+                                <p class="text-muted mb-0">
+                                    support@houserent.com
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <!-- Working Hours -->
+                        <div class="d-flex">
+
+                            <div class="me-3">
+                                <i class="bi bi-clock-fill text-warning fs-3"></i>
+                            </div>
+
+                            <div>
+                                <h5 class="fw-bold mb-1">Working Hours</h5>
+                                <p class="text-muted mb-0">
+                                    Monday - Saturday<br>
+                                    9:00 AM - 6:00 PM
+                                </p>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- RIGHT SIDE FORM -->
+            <div class="col-lg-7">
+
+                <div class="card border-0 shadow-lg rounded-4">
+
+                    <div class="card-body p-4 p-md-5">
+
+                        <h3 class="fw-bold mb-4">
+                            Send Us a Message
+                        </h3>
+
+                       <form method="POST">
+
+                            {% csrf_token %}
+
+                            <div class="row">
+
+                                <div class="col-md-6 mb-3">
+
+                                    <label class="form-label fw-semibold">
+                                        Full Name
+                                    </label>
+
+                                    <input type="text"
+                                        class="form-control form-control-lg"
+                                        placeholder="Enter your name"
+                                        name="full_name"
+                                        required>
+
+                                </div>
+
+                                <div class="col-md-6 mb-3">                     
+
+                                    <label class="form-label fw-semibold">
+                                        Email
+                                    </label>
+
+                                    <input type="email"
+                                        class="form-control form-control-lg"
+                                        placeholder="Enter your email"
+                                        name="email"
+                                        required>
+
+                                </div>
+
+                            </div>
+
+
+                             <div class="mb-3">
+
+                                <label class="form-label fw-semibold">
+                                    Subject
+                                </label>
+
+                                <input type="text"
+                                    class="form-control form-control-lg"
+                                    placeholder="Enter subject"
+                                    name="subject"
+                                    required>
+
+                            </div>
+
+
+                            <div class="mb-4">
+
+                                <label class="form-label fw-semibold">
+                                    Message
+                                </label>
+
+                                <textarea class="form-control"
+                                    rows="6"
+                                    placeholder="Write your message here..."                    
+                                    name="message"
+                                    required></textarea>
+
+                            </div>
+
+                            <button type="submit"
+                                class="btn btn-primary btn-lg w-100">
+                                
+                                <i class="bi bi-send-fill me-2"></i>
+                                Send Message
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

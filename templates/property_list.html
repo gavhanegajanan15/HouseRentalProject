@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+
+{% block title %}All Properties - HouseRent{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- Heading -->
+    <div class="text-center mb-5">
+        <h1 class="fw-bold">
+            <i class="bi bi-buildings text-primary"></i>
+            All Properties
+        </h1>
+
+        <p class="text-muted">
+            Find the perfect rental property for you
+        </p>
+    </div>
+
+
+    {% if properties %}
+
+    <div class="row g-4">
+
+        {% for property in properties %}
+
+        <div class="col-lg-4 col-md-6">
+
+            <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+
+                <!-- Property Image -->
+                {% if property.image %}
+
+                <img src="{{ property.image.url }}"
+                     class="card-img-top"
+                     alt="{{ property.title }}"
+                     style="height:230px; object-fit:cover;">
+
+                {% endif %}
+
+
+                <div class="card-body p-4">
+
+                    <!-- Property Type -->
+                    {% if property.property_type == "Apartment" %}
+
+                    <span class="badge bg-warning text-dark mb-2">
+                        {{ property.property_type }}
+                    </span>
+
+                    {% elif property.property_type == "Villa" %}
+
+                    <span class="badge bg-success mb-2">
+                        {{ property.property_type }}
+                    </span>
+
+                    {% else %}
+
+                    <span class="badge bg-primary mb-2">
+                        {{ property.property_type }}
+                    </span>
+
+                    {% endif %}
+
+                    <!-- Title -->
+                    <h4 class="fw-bold">
+                        {{ property.title }}
+                    </h4>
+
+                    {% if property.is_available %}
+
+                    <span class="badge bg-success mb-2">
+                        Available
+                    </span>
+
+                    {% else %}
+
+                    <span class="badge bg-danger mb-2">
+                        Not Available
+                    </span>
+
+                    {% endif %}                 
+
+                    <!-- Location -->
+                    <p class="text-muted">
+                        <i class="bi bi-geo-alt-fill text-danger"></i>
+                        {{ property.location }}
+                    </p>
+
+                    <!-- Property Details -->
+                    <div class="d-flex justify-content-between border-top border-bottom py-3 mb-3">
+
+                        <span>
+                            <i class="bi bi-door-open text-primary"></i>
+                            {{ property.bedrooms }} Beds
+                        </span>
+
+                        <span>
+                            <i class="bi bi-droplet text-info"></i>
+                            {{ property.bathrooms }} Baths
+                        </span>
+
+                        <span>
+                            <i class="bi bi-arrows-fullscreen text-warning"></i>
+                            {{ property.area }} sqft
+                        </span>
+
+                    </div>
+
+                    <p class="mb-2">
+
+                        ⭐⭐⭐⭐⭐
+
+                        <span class="text-muted">
+                            (4.8)
+                        </span>
+
+                    </p>                    
+
+                    <!-- Price -->
+                    <h4 class="text-primary fw-bold">
+                        ₹{{ property.price }}
+                        <small class="text-muted fs-6 fw-normal">
+                            / Month
+                        </small>
+                    </h4>
+
+                </div>
+
+                <!-- Button -->
+                <div class="card-footer border-0 px-4 pb-4">
+
+                    <a href="{% url 'property_detail' property.id %}"
+                       class="btn btn-primary w-100">
+
+                        <i class="bi bi-eye-fill"></i>
+                        View Details
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <div class="alert alert-info text-center">
+        <h4>No Properties Available</h4>
+        <p class="mb-0">Currently there are no properties available for rent.</p>
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

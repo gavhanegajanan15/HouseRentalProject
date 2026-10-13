@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+
+{% block title %}Book Property{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="card border-0 shadow-lg rounded-4">
+
+                <div class="card-header bg-primary text-white text-center py-4 rounded-top-4">
+
+                    <h2 class="mb-1">
+                        <i class="bi bi-calendar-check-fill"></i>
+                        Book Property Visit
+                    </h2>
+
+                    <p class="mb-0">
+                        Fill the details below to schedule your visit.
+                    </p>
+
+                </div>
+
+                <div class="card-body p-4">
+
+                <form method="POST">
+
+                      {% csrf_token %}
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label fw-semibold">
+                                    Full Name
+                                </label>
+
+                                <input type="text"
+                                class="form-control form-control-lg"
+                                placeholder="Enter Full Name"
+                                name="full_name">
+
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label fw-semibold">
+                                    Email
+                                </label>
+
+                               <input type="email"
+                                class="form-control form-control-lg"
+                                placeholder="Enter Email"
+                                name="email">
+
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label fw-semibold">
+                                    Phone Number
+                                </label>
+
+                                <input type="text"
+                                class="form-control form-control-lg"
+                                placeholder="Enter Phone Number"
+                                name="phone">
+
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label fw-semibold">
+                                    Visit Date
+                                </label>
+
+                                <input
+                                 type="date"
+                                 class="form-control form-control-lg"
+                                 name="visit_date"
+                                 required
+>                                  
+                                                            
+                            </div>
+
+                        </div>
+
+                        <div class="mb-4">
+
+                            <label class="form-label fw-semibold">
+                                Message
+                            </label>
+
+                            <textarea
+                            class="form-control"
+                            rows="5"
+                            placeholder="Write your message..."
+                            name="message"></textarea>
+
+                        </div>
+
+                        <div class="d-grid">
+
+                            <button class="btn btn-success btn-lg rounded-3">
+
+                                <i class="bi bi-check-circle-fill"></i>
+
+                                Confirm Booking
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

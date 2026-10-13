@@ -1,0 +1,477 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Register | HouseRent{% endblock %}
+
+{% block content %}
+
+<section class="login-section">
+
+    <div class="container">
+
+        <div class="row login-wrapper shadow-lg">
+
+            <!-- Left Side -->
+            <div class="col-lg-6 login-image d-none d-lg-block">
+
+                <img src="{% static 'images/properties/house_02.jpg' %}"
+                     class="img-fluid h-100 w-100"
+                     style="object-fit:cover;"
+                     alt="House">
+
+            </div>
+
+
+            <!-- Right Side -->
+            <div class="col-lg-6">
+
+                <div class="login-card">
+
+                    <div class="text-center mb-4">
+
+                        <i class="bi bi-person-plus-fill login-icon"></i>
+
+                        <h2 class="fw-bold mt-3">
+                            Create Account
+                        </h2>
+
+                        <p class="text-muted">
+                            Join HouseRent today
+                        </p>
+
+                    </div>
+
+
+                    <!-- Messages -->
+
+                    {% if messages %}
+
+                        {% for message in messages %}
+
+                            <div class="alert alert-success">
+                                {{ message }}
+                            </div>
+
+                        {% endfor %}
+
+                    {% endif %}
+
+
+                    <!-- Form Errors -->
+
+                    {% if form.errors %}
+
+                        <div class="alert alert-danger">
+                            {{ form.errors }}
+                        </div>
+
+                    {% endif %}
+
+
+                    <!-- Registration Form -->
+
+                    <form method="POST" id="register-form">
+
+                        {% csrf_token %}
+
+
+                        <!-- Full Name -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Full Name
+                            </label>
+
+                            {{ form.first_name }}
+
+                        </div>
+
+
+                        <!-- Username -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Username
+                            </label>
+
+                            {{ form.username }}
+
+                        </div>
+
+
+                        <!-- Email -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Email Address
+                            </label>
+
+                            {{ form.email }}
+
+                        </div>
+
+
+                        <!-- Send Email OTP -->
+
+                        <div class="mb-3">
+
+                            <button
+                                type="button"
+                                id="send-otp-btn"
+                                class="btn btn-outline-primary">
+
+                                📧 Send Email OTP
+
+                            </button>
+
+                            <div
+                                id="otp-message"
+                                class="small mt-2">
+                            </div>
+
+                        </div>
+
+
+                        <!-- OTP Section -->
+
+                        <div
+                            class="mb-3"
+                            id="otp-section"
+                            style="display:none;">
+
+                            <label class="form-label">
+                                Enter OTP
+                            </label>
+
+                            <input
+                                type="text"
+                                id="otp-code"
+                                class="form-control"
+                                maxlength="6"
+                                inputmode="numeric"
+                                placeholder="Enter 6-digit OTP">
+
+                            <button
+                                type="button"
+                                id="verify-otp-btn"
+                                class="btn btn-success mt-2">
+
+                                Verify OTP
+
+                            </button>
+
+                        </div>
+
+
+                        <!-- Phone -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Phone Number
+                            </label>
+
+                            {{ form.phone }}
+
+                        </div>
+
+
+                        <!-- Password -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Password
+                            </label>
+
+                            {{ form.password }}
+
+                        </div>
+
+
+                        <!-- Confirm Password -->
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+                                Confirm Password
+                            </label>
+
+                            {{ form.confirm_password }}
+
+                        </div>
+
+
+                        <!-- Register -->
+
+                        <button
+                            type="submit"
+                            id="register-btn"
+                            class="btn btn-primary w-100"
+                            disabled>
+
+                            Create Account
+
+                        </button>
+
+                    </form>
+
+
+                    <hr>
+
+
+                    <p class="text-center mb-0">
+
+                        Already have an account?
+
+                        <a href="{% url 'login' %}">
+                            Login
+                        </a>
+
+                    </p>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const emailInput = document.querySelector(
+        'input[name="email"]'
+    );
+
+    const sendOtpBtn =
+        document.getElementById("send-otp-btn");
+
+    const verifyOtpBtn =
+        document.getElementById("verify-otp-btn");
+
+    const otpSection =
+        document.getElementById("otp-section");
+
+    const otpInput =
+        document.getElementById("otp-code");
+
+    const otpMessage =
+        document.getElementById("otp-message");
+
+    const registerBtn =
+        document.getElementById("register-btn");
+
+
+    // Send OTP
+    sendOtpBtn.addEventListener("click", function () {
+
+        const email = emailInput.value.trim();
+
+        if (!email) {
+
+            otpMessage.innerText =
+                "Please enter your email first.";
+
+            otpMessage.className =
+                "small mt-2 text-danger";
+
+            return;
+        }
+
+
+        sendOtpBtn.disabled = true;
+
+        sendOtpBtn.innerText =
+            "Sending OTP...";
+
+
+        fetch("{% url 'send_email_otp' %}", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "X-CSRFToken":
+                    document.querySelector(
+                        '[name=csrfmiddlewaretoken]'
+                    ).value
+            },
+
+            body:
+                "email=" +
+                encodeURIComponent(email)
+
+        })
+
+        .then(response => response.json())
+
+        .then(data => {
+
+            if (data.success) {
+
+                otpSection.style.display = "block";
+
+                otpMessage.innerText =
+                    "OTP sent to your email.";
+
+                otpMessage.className =
+                    "small mt-2 text-success";
+
+                sendOtpBtn.innerText =
+                    "OTP Sent ✓";
+
+            } else {
+
+                otpMessage.innerText =
+                    data.message;
+
+                otpMessage.className =
+                    "small mt-2 text-danger";
+
+                sendOtpBtn.disabled = false;
+
+                sendOtpBtn.innerText =
+                    "📧 Send Email OTP";
+            }
+
+        })
+
+        .catch(error => {
+
+            console.error(error);
+
+            otpMessage.innerText =
+                "Something went wrong. Please try again.";
+
+            otpMessage.className =
+                "small mt-2 text-danger";
+
+            sendOtpBtn.disabled = false;
+
+            sendOtpBtn.innerText =
+                "📧 Send Email OTP";
+
+        });
+
+    });
+
+
+    // Verify OTP
+    verifyOtpBtn.addEventListener("click", function () {
+
+        const otp = otpInput.value.trim();
+
+        if (!otp) {
+
+            otpMessage.innerText =
+                "Please enter the OTP.";
+
+            otpMessage.className =
+                "small mt-2 text-danger";
+
+            return;
+        }
+
+
+        verifyOtpBtn.disabled = true;
+
+        verifyOtpBtn.innerText =
+            "Verifying...";
+
+
+        fetch("{% url 'verify_email_otp' %}", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "X-CSRFToken":
+                    document.querySelector(
+                        '[name=csrfmiddlewaretoken]'
+                    ).value
+            },
+
+            body:
+                "otp=" +
+                encodeURIComponent(otp)
+
+        })
+
+        .then(response => response.json())
+
+        .then(data => {
+
+            if (data.success) {
+
+                otpMessage.innerText =
+                    "Email verified successfully ✓";
+
+                otpMessage.className =
+                    "small mt-2 text-success";
+
+                otpInput.disabled = true;
+
+                verifyOtpBtn.innerText =
+                    "Verified ✓";
+
+                verifyOtpBtn.classList.remove(
+                    "btn-success"
+                );
+
+                verifyOtpBtn.classList.add(
+                    "btn-secondary"
+                );
+
+                registerBtn.disabled = false;
+
+            } else {
+
+                otpMessage.innerText =
+                    data.message;
+
+                otpMessage.className =
+                    "small mt-2 text-danger";
+
+                verifyOtpBtn.disabled = false;
+
+                verifyOtpBtn.innerText =
+                    "Verify OTP";
+
+            }
+
+        })
+
+        .catch(error => {
+
+            console.error(error);
+
+            otpMessage.innerText =
+                "Something went wrong. Please try again.";
+
+            otpMessage.className =
+                "small mt-2 text-danger";
+
+            verifyOtpBtn.disabled = false;
+
+            verifyOtpBtn.innerText =
+                "Verify OTP";
+
+        });
+
+    });
+
+});
+
+</script>
+
+{% endblock %}

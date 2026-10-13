@@ -1,0 +1,234 @@
+{% extends 'base.html' %}
+
+{% block title %}My Bookings{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- Page Heading -->
+    <div class="text-center mb-5">
+        <h2 class="fw-bold">
+            <i class="bi bi-calendar-check-fill text-primary"></i>
+            My Bookings
+        </h2>
+        <p class="text-muted mb-0">
+            View and manage your property bookings
+        </p>
+    </div>
+
+    {% if bookings %}
+
+    <div class="row g-4">
+
+        {% for booking in bookings %}
+
+        <div class="col-lg-6">
+
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden h-100">
+
+                <!-- Property Image -->
+                {% if booking.property.image %}
+                <img src="{{ booking.property.image.url }}"
+                     alt="{{ booking.property.title }}"
+                     style="width:100%; height:230px; object-fit:cover;">
+                {% endif %}
+
+                <div class="card-body p-4">
+
+                    <!-- Property Title + Status -->
+                    <div class="d-flex justify-content-between align-items-start gap-3 mb-2">
+
+                        <h4 class="fw-bold mb-0">
+                            {{ booking.property.title }}
+                        </h4>
+
+                        {% if booking.status == "Approved" %}
+
+                            <span class="badge bg-success px-3 py-2">
+                                <i class="bi bi-check-circle-fill"></i>
+                                Approved
+                            </span>
+
+                        {% elif booking.status == "Rejected" %}
+
+                            <span class="badge bg-danger px-3 py-2">
+                                <i class="bi bi-x-circle-fill"></i>
+                                Rejected
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge bg-warning text-dark px-3 py-2">
+                                <i class="bi bi-clock-fill"></i>
+                                Pending
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+                    <!-- Location -->
+                    <p class="text-muted mb-2">
+                        <i class="bi bi-geo-alt-fill text-danger"></i>
+                        {{ booking.property.location }}
+                    </p>
+
+                    <!-- Price -->
+                    <h5 class="text-primary fw-bold mb-4">
+                        ₹{{ booking.property.price }}
+                        <small class="text-muted fw-normal">/ Month</small>
+                    </h5>
+
+                    <!-- Booking Information -->
+                    <div class="bg-light rounded-4 p-3 mb-4">
+
+                        <div class="row g-3">
+
+                            <div class="col-6">
+                                <small class="text-muted d-block">
+                                    <i class="bi bi-calendar-event text-primary"></i>
+                                    Visit Date
+                                </small>
+
+                                <strong>
+                                    {{ booking.visit_date }}
+                                </strong>
+                            </div>
+
+                            <div class="col-6">
+                                <small class="text-muted d-block">
+                                    <i class="bi bi-calendar-plus text-primary"></i>
+                                    Booked On
+                                </small>
+
+                                <strong>
+                                    {{ booking.booking_date|date:"d M Y" }}
+                                </strong>
+                            </div>
+
+                            <div class="col-6">
+                                <small class="text-muted d-block">
+                                    <i class="bi bi-telephone-fill text-success"></i>
+                                    Phone
+                                </small>
+
+                                <strong>
+                                    {{ booking.phone }}
+                                </strong>
+                            </div>
+
+                            <div class="col-6">
+                                <small class="text-muted d-block">
+                                    <i class="bi bi-house-door-fill text-primary"></i>
+                                    Property Type
+                                </small>
+
+                                <strong>
+                                    {{ booking.property.property_type }}
+                                </strong>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="d-flex gap-2 flex-wrap">
+
+                        <a href="{% url 'property_detail' booking.property.id %}"
+                           class="btn btn-primary flex-grow-1">
+
+                            <i class="bi bi-eye-fill"></i>
+                            View Property
+
+                        </a>
+
+                        {% if booking.status == "Pending" %}
+
+                        <a href="{% url 'cancel_booking' booking.id %}"
+                           class="btn btn-outline-danger flex-grow-1"
+                           onclick="return confirm('Are you sure you want to cancel this booking?');">
+
+                            <i class="bi bi-x-circle-fill"></i>
+                            Cancel Booking
+
+                        </a>
+
+                        {% endif %}
+
+                    </div>
+
+                    <!-- Approved Message -->
+                    {% if booking.status == "Approved" %}
+
+                    <div class="alert alert-success mt-3 mb-0 rounded-3">
+
+                        <i class="bi bi-check-circle-fill"></i>
+
+                        <strong>Booking Approved!</strong><br>
+
+                        Your property visit has been confirmed.
+
+                    </div>
+
+                    {% endif %}
+
+
+                    <!-- Rejected Message -->
+                    {% if booking.status == "Rejected" %}
+
+                    <div class="alert alert-danger mt-3 mb-0 rounded-3">
+
+                        <i class="bi bi-x-circle-fill"></i>
+
+                        <strong>Booking Rejected</strong><br>
+
+                        This property visit request was not approved.
+
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <!-- No Booking -->
+    <div class="card border-0 shadow-sm rounded-4">
+
+        <div class="card-body text-center py-5">
+
+            <i class="bi bi-calendar-x text-primary"
+               style="font-size:60px;"></i>
+
+            <h3 class="fw-bold mt-3">
+                No Bookings Yet!
+            </h3>
+
+            <p class="text-muted">
+                You haven't booked any property yet.
+            </p>
+
+            <a href="/" class="btn btn-primary btn-lg px-4">
+                <i class="bi bi-house-door-fill"></i>
+                Browse Properties
+            </a>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
